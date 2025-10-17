@@ -1,16 +1,16 @@
-<div class="flex gap-3 max-w-2xl mx-auto">
+<form (ngSubmit)="onAddTodo()" class="flex gap-3 max-w-2xl mx-auto">
   <input
     type="text"
     [(ngModel)]="todoText"
+    name="todoText"
     placeholder="Enter a new todo..."
     class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-blue-500 transition-colors"
-    (keyup.enter)="onAddTodo()"
   />
   <button
-    (click)="onAddTodo()"
+    type="submit"
     [disabled]="!todoText.trim()"
     class="px-6 py-3 bg-blue-500 text-white rounded-lg text-base font-medium hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
   >
     Add
   </button>
-</div>
+</form>

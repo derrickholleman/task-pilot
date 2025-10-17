@@ -22,9 +22,8 @@ test.describe('TaskPilot Home Page', () => {
     const todoText = 'Buy groceries';
     const input = page.getByPlaceholder('Enter a new todo...');
     await input.fill(todoText);
-
-    const addButton = page.getByRole('button', { name: 'Add' });
-    await addButton.click();
+    // Press Enter to submit
+    await input.press('Enter');
 
     // Verify the todo appears on the page
     await expect(page.getByText(todoText)).toBeVisible();
