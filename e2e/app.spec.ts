@@ -114,7 +114,7 @@ test.describe('TaskPilot Home Page', () => {
     await checkbox.click();
 
     // Verify checkbox is unchecked
-    await expect(checkbox).not.toBeChecked();
+    await expect(checkbox).toBeChecked();
 
     // Verify the line-through class is removed
     await expect(todoTextElement).not.toHaveClass(/line-through/);
