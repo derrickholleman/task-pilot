@@ -12,11 +12,11 @@ A modern todo application built with Angular, featuring inline editing, completi
 
 ## Features
 
-- ✅ Add, edit, and delete todos
-- ✅ Mark todos as complete/incomplete with strikethrough styling
-- ✅ Inline editing with auto-focus
-- ✅ Local storage persistence
-- ✅ Responsive design
+- Add, edit, and delete todos
+- Mark todos as complete/incomplete with strikethrough styling
+- Inline editing with auto-focus
+- Local storage persistence
+- Responsive design
 
 ## Getting Started
 
