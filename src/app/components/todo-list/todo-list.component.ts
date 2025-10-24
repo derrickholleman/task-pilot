@@ -11,8 +11,13 @@ import { Todo } from '../../services/todo-storage.service'
 export class TodoListComponent {
   @Input() todos: Todo[] = []
   @Output() deleteTodo = new EventEmitter<string>()
+  @Output() toggleTodo = new EventEmitter<string>()
 
   onDeleteTodo(id: string): void {
     this.deleteTodo.emit(id)
+  }
+
+  onToggleTodo(id: string): void {
+    this.toggleTodo.emit(id)
   }
 }

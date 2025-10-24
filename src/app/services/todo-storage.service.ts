@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 export interface Todo {
   id: string
   text: string
+  isCompleted: boolean
 }
 
 @Injectable({
@@ -30,6 +31,15 @@ export class TodoStorageService {
   deleteTodo(id: string): Todo[] {
     const todos = this.getTodos()
     const updatedTodos = todos.filter((todo) => todo.id !== id)
+    this.saveTodos(updatedTodos)
+    return updatedTodos
+  }
+
+  toggleCompletion(id: string): Todo[] {
+    const todos = this.getTodos()
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo,
+    )
     this.saveTodos(updatedTodos)
     return updatedTodos
   }

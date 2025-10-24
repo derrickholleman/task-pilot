@@ -5,7 +5,11 @@
 
   <app-todo-input (addTodo)="onAddTodo($event)"></app-todo-input>
 
-  <app-todo-list [todos]="todos" (deleteTodo)="onDeleteTodo($event)"></app-todo-list>
+  <app-todo-list
+    [todos]="todos"
+    (deleteTodo)="onDeleteTodo($event)"
+    (toggleTodo)="onToggleTodo($event)"
+  ></app-todo-list>
 </div>
 
 <router-outlet />

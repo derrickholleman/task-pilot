@@ -3,7 +3,21 @@
     *ngFor="let todo of todos"
     class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow flex items-center justify-between gap-4"
   >
-    <p class="text-gray-800 flex-1">{{ todo.text }}</p>
+    <div class="flex items-center gap-3 flex-1">
+      <input
+        type="checkbox"
+        [checked]="todo.isCompleted"
+        (change)="onToggleTodo(todo.id)"
+        class="w-5 h-5 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+        aria-label="Mark todo as complete"
+      />
+      <p
+        class="text-gray-800 flex-1 transition-all"
+        [ngClass]="{ 'line-through text-gray-400': todo.isCompleted }"
+      >
+        {{ todo.text }}
+      </p>
+    </div>
     <button
       (click)="onDeleteTodo(todo.id)"
       class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg cursor-pointer transition-colors"

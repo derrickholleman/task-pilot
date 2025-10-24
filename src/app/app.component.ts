@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
     const newTodo: Todo = {
       id: crypto.randomUUID(),
       text,
+      isCompleted: false,
     }
     this.todos.push(newTodo)
     this.todoStorage.saveTodos(this.todos)
@@ -29,5 +30,9 @@ export class AppComponent implements OnInit {
 
   onDeleteTodo(id: string): void {
     this.todos = this.todoStorage.deleteTodo(id)
+  }
+
+  onToggleTodo(id: string): void {
+    this.todos = this.todoStorage.toggleCompletion(id)
   }
 }
