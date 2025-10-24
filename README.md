@@ -1,59 +1,101 @@
-# AngularTodo
+# TaskPilot
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.17.
+A modern todo application built with Angular, featuring inline editing, completion tracking, and local storage persistence.
 
-## Development server
+## Technologies
 
-To start a local development server, run:
+- **[Angular](https://angular.dev/)** - Frontend framework
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[Playwright](https://playwright.dev/)** - End-to-end testing
+- **[ESLint](https://eslint.org/)** + **[Prettier](https://prettier.io/)** - Code quality and formatting
+- **[Husky](https://typicode.github.io/husky/)** + **[lint-staged](https://github.com/lint-staged/lint-staged)** - Git hooks and pre-commit checks
 
-```bash
-ng serve
-```
+## Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- ✅ Add, edit, and delete todos
+- ✅ Mark todos as complete/incomplete with strikethrough styling
+- ✅ Inline editing with auto-focus
+- ✅ Local storage persistence
+- ✅ Responsive design
 
-## Code scaffolding
+## Getting Started
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Prerequisites
 
-```bash
-ng generate component component-name
-```
+- Node.js (v20.19.0 or higher recommended)
+- npm
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Installation
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Development
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Start the development server:
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Navigate to `http://localhost:4200/`. The app will automatically reload when you make changes.
 
-For end-to-end (e2e) testing, run:
+### Build
+
+Build the project for production:
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+The build artifacts will be stored in the `dist/` directory.
 
-## Additional Resources
+### Testing
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Run end-to-end tests:
+
+```bash
+npm run e2e
+```
+
+### Code Quality
+
+Format code:
+
+```bash
+npm run format
+```
+
+Lint code:
+
+```bash
+npm run lint
+```
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── icons/           # SVG icon components
+│   │   ├── shared/          # Shared components (icon-button)
+│   │   ├── todo-input/      # Todo input component
+│   │   └── todo-list/       # Todo list component
+│   ├── services/
+│   │   └── todo-storage.service.ts
+│   ├── app.component.ts
+│   └── app.config.ts
+└── styles.css
+```
+
+## Pre-commit Hooks
+
+This project uses Husky and lint-staged to run checks before commits:
+
+- ESLint (with auto-fix)
+- Prettier (with auto-format)
+- Playwright e2e tests
+
+All checks must pass before a commit is allowed.
