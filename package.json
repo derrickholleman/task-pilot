@@ -54,7 +54,7 @@
     "*.{ts,html}": [
       "eslint --fix",
       "prettier --write",
-      "npx playwright test --reporter=list"
+      "bash -c 'npx playwright test --reporter=list'"
     ]
   }
 }

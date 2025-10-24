@@ -35,4 +35,8 @@ export class AppComponent implements OnInit {
   onToggleTodo(id: string): void {
     this.todos = this.todoStorage.toggleCompletion(id)
   }
+
+  onUpdateTodo(event: { id: string; text: string }): void {
+    this.todos = this.todoStorage.updateTodo(event.id, event.text)
+  }
 }

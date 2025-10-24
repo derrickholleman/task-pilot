@@ -43,4 +43,11 @@ export class TodoStorageService {
     this.saveTodos(updatedTodos)
     return updatedTodos
   }
+
+  updateTodo(id: string, text: string): Todo[] {
+    const todos = this.getTodos()
+    const updatedTodos = todos.map((todo) => (todo.id === id ? { ...todo, text } : todo))
+    this.saveTodos(updatedTodos)
+    return updatedTodos
+  }
 }

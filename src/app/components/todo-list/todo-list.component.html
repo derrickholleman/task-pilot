@@ -8,32 +8,110 @@
         type="checkbox"
         [checked]="todo.isCompleted"
         (change)="onToggleTodo(todo.id)"
-        class="w-5 h-5 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+        [disabled]="isEditing(todo.id)"
+        class="w-5 h-5 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label="Mark todo as complete"
       />
+
+      <!-- View mode -->
       <p
+        *ngIf="!isEditing(todo.id)"
         class="text-gray-800 flex-1 transition-all"
         [ngClass]="{ 'line-through text-gray-400': todo.isCompleted }"
       >
         {{ todo.text }}
       </p>
+
+      <!-- Edit mode -->
+      <input
+        *ngIf="isEditing(todo.id)"
+        #editInput
+        type="text"
+        [(ngModel)]="editingText"
+        (keyup.enter)="onSaveTodo()"
+        (keyup.escape)="onCancelEdit()"
+        class="flex-1 px-3 py-2 border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        aria-label="Edit todo text"
+      />
     </div>
-    <button
-      (click)="onDeleteTodo(todo.id)"
-      class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg cursor-pointer transition-colors"
-      aria-label="Delete todo"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2"
-        stroke="currentColor"
-        class="w-5 h-5"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
+
+    <div class="flex items-center gap-2">
+      <!-- Edit mode buttons -->
+      <ng-container *ngIf="isEditing(todo.id)">
+        <button
+          (click)="onSaveTodo()"
+          class="text-green-600 hover:text-green-700 hover:bg-green-50 p-2 rounded-lg cursor-pointer transition-colors"
+          aria-label="Save todo"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </button>
+        <button
+          (click)="onCancelEdit()"
+          class="text-gray-500 hover:text-gray-700 hover:bg-gray-50 p-2 rounded-lg cursor-pointer transition-colors"
+          aria-label="Cancel edit"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </ng-container>
+
+      <!-- View mode buttons -->
+      <ng-container *ngIf="!isEditing(todo.id)">
+        <button
+          (click)="onEditTodo(todo)"
+          class="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-2 rounded-lg cursor-pointer transition-colors"
+          aria-label="Edit todo"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16.862 3.487a2.25 2.25 0 0 1 3.182 3.182L7.125 19.588a4.5 4.5 0 0 1-1.897 1.13L2 21.75l1.032-3.228a4.5 4.5 0 0 1 1.13-1.897L16.862 3.487Z"
+            />
+          </svg>
+        </button>
+        <button
+          (click)="onDeleteTodo(todo.id)"
+          class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg cursor-pointer transition-colors"
+          aria-label="Delete todo"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </ng-container>
+    </div>
   </div>
 
   <div *ngIf="todos.length === 0" class="text-center text-gray-400 py-8">
