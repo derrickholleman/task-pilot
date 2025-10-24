@@ -38,38 +38,22 @@
     <div class="flex items-center gap-2">
       <!-- Edit mode buttons -->
       <ng-container *ngIf="isEditing(todo.id)">
-        <button
-          (click)="onSaveTodo()"
-          class="text-green-600 hover:text-green-700 hover:bg-green-50 p-2 rounded-lg cursor-pointer transition-colors"
-          aria-label="Save todo"
-        >
+        <app-icon-button (clicked)="onSaveTodo()" variant="green" ariaLabel="Save todo">
           <app-checkmark-icon />
-        </button>
-        <button
-          (click)="onCancelEdit()"
-          class="text-gray-500 hover:text-gray-700 hover:bg-gray-50 p-2 rounded-lg cursor-pointer transition-colors"
-          aria-label="Cancel edit"
-        >
+        </app-icon-button>
+        <app-icon-button (clicked)="onCancelEdit()" variant="gray" ariaLabel="Cancel edit">
           <app-x-icon />
-        </button>
+        </app-icon-button>
       </ng-container>
 
       <!-- View mode buttons -->
       <ng-container *ngIf="!isEditing(todo.id)">
-        <button
-          (click)="onEditTodo(todo)"
-          class="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-2 rounded-lg cursor-pointer transition-colors"
-          aria-label="Edit todo"
-        >
+        <app-icon-button (clicked)="onEditTodo(todo)" variant="blue" ariaLabel="Edit todo">
           <app-pencil-icon />
-        </button>
-        <button
-          (click)="onDeleteTodo(todo.id)"
-          class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg cursor-pointer transition-colors"
-          aria-label="Delete todo"
-        >
+        </app-icon-button>
+        <app-icon-button (clicked)="onDeleteTodo(todo.id)" variant="red" ariaLabel="Delete todo">
           <app-x-icon />
-        </button>
+        </app-icon-button>
       </ng-container>
     </div>
   </div>

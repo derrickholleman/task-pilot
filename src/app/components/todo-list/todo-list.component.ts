@@ -14,11 +14,19 @@ import { Todo } from '../../services/todo-storage.service'
 import { CheckmarkIconComponent } from '../icons/checkmark-icon.component'
 import { XIconComponent } from '../icons/x-icon.component'
 import { PencilIconComponent } from '../icons/pencil-icon.component'
+import { IconButtonComponent } from '../shared/icon-button.component'
 
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, CheckmarkIconComponent, XIconComponent, PencilIconComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CheckmarkIconComponent,
+    XIconComponent,
+    PencilIconComponent,
+    IconButtonComponent,
+  ],
   templateUrl: './todo-list.component.html',
 })
 export class TodoListComponent implements AfterViewChecked {
