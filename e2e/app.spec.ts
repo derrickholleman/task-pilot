@@ -110,7 +110,7 @@ test.describe('TaskPilot Home Page', () => {
     const todoTextElement = page.locator('p', { hasText: todoText });
     await expect(todoTextElement).toHaveClass(/line-through/);
 
-    // Click again
+    // Click again to uncheck
     await checkbox.click();
 
     // Verify checkbox is unchecked

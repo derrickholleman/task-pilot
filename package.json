@@ -54,7 +54,7 @@
     "*.{ts,html}": [
       "eslint --fix",
       "prettier --write",
-      "npm run e2e"
+      "npx playwright test"
     ]
   }
 }
