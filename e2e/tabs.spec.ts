@@ -76,14 +76,12 @@ test.describe('Todo Tabs', () => {
     await expect(input).toBeVisible();
     await expect(addButton).toBeVisible();
 
-    // Switch to Active tab
     await page.getByRole('tab', { name: 'Active' }).click();
 
     // Verify input is still visible on Active tab
     await expect(input).toBeVisible();
     await expect(addButton).toBeVisible();
 
-    // Switch to Completed tab
     await page.getByRole('tab', { name: 'Completed' }).click();
 
     // Verify input is hidden on Completed tab
@@ -101,16 +99,42 @@ test.describe('Todo Tabs', () => {
     // Verify empty message is visible on All tab (default)
     await expect(emptyMessage).toBeVisible();
 
-    // Switch to Active tab
     await page.getByRole('tab', { name: 'Active' }).click();
 
     // Verify empty message is visible on Active tab
     await expect(emptyMessage).toBeVisible();
 
-    // Switch to Completed tab
     await page.getByRole('tab', { name: 'Completed' }).click();
 
     // Verify empty message is NOT visible on Completed tab
     await expect(emptyMessage).not.toBeVisible();
+  });
+
+  test('selected tab persists after page refresh', async ({ page }) => {
+    const allTab = page.getByRole('tab', { name: 'All' });
+    const activeTab = page.getByRole('tab', { name: 'Active' });
+    const completedTab = page.getByRole('tab', { name: 'Completed' });
+
+    // Verify All tab is selected by default
+    await expect(allTab).toHaveAttribute('aria-selected', 'true');
+
+    await activeTab.click();
+    await expect(activeTab).toHaveAttribute('aria-selected', 'true');
+
+    await page.reload();
+
+    // Verify Active tab is still selected after refresh
+    await expect(activeTab).toHaveAttribute('aria-selected', 'true');
+    await expect(allTab).toHaveAttribute('aria-selected', 'false');
+
+    await completedTab.click();
+    await expect(completedTab).toHaveAttribute('aria-selected', 'true');
+
+    await page.reload();
+
+    // Verify Completed tab is still selected after refresh
+    await expect(completedTab).toHaveAttribute('aria-selected', 'true');
+    await expect(allTab).toHaveAttribute('aria-selected', 'false');
+    await expect(activeTab).toHaveAttribute('aria-selected', 'false');
   });
 });

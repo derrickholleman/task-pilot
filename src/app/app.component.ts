@@ -22,9 +22,18 @@ export class AppComponent implements OnInit {
   selectedFilter: TodoFilter = TodoFilter.All
   TodoFilter = TodoFilter // Expose enum to template
   private todoStorage = inject(TodoStorageService)
+  private readonly FILTER_STORAGE_KEY = 'taskpilot-selected-filter'
 
   ngOnInit(): void {
     this.todos = this.todoStorage.getTodos()
+    this.loadSelectedFilter()
+  }
+
+  private loadSelectedFilter(): void {
+    const savedFilter = localStorage.getItem(this.FILTER_STORAGE_KEY)
+    if (savedFilter && Object.values(TodoFilter).includes(savedFilter as TodoFilter)) {
+      this.selectedFilter = savedFilter as TodoFilter
+    }
   }
 
   get filteredTodos(): Todo[] {
@@ -40,6 +49,7 @@ export class AppComponent implements OnInit {
 
   setFilter(filter: TodoFilter): void {
     this.selectedFilter = filter
+    localStorage.setItem(this.FILTER_STORAGE_KEY, filter)
   }
 
   onAddTodo(text: string): void {
