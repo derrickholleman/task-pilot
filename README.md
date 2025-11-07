@@ -15,6 +15,9 @@ A modern todo application built with Angular, featuring inline editing, completi
 - Add, edit, and delete todos
 - Mark todos as complete/incomplete with strikethrough styling
 - Inline editing with auto-focus
+- Tab-based filtering (All, Active, Completed)
+- Bulk delete completed todos
+- Tab selection persistence across sessions
 - Local storage persistence
 - Responsive design
 
@@ -80,7 +83,9 @@ src/
 ├── app/
 │   ├── components/
 │   │   ├── icons/           # SVG icon components
-│   │   ├── shared/          # Shared components (icon-button)
+│   │   ├── shared/          # Reusable shared components
+│   │   │   ├── icon-button/ # Icon button component
+│   │   │   └── tab/         # Tab component
 │   │   ├── todo-input/      # Todo input component
 │   │   └── todo-list/       # Todo list component
 │   ├── services/
