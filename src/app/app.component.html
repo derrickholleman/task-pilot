@@ -24,10 +24,16 @@
     </div>
   </div>
 
-  <app-todo-input (addTodo)="onAddTodo($event)"></app-todo-input>
+  <app-todo-input
+    *ngIf="selectedFilter !== TodoFilter.Completed"
+    (addTodo)="onAddTodo($event)"
+  ></app-todo-input>
 
   <app-todo-list
     [todos]="filteredTodos"
+    [emptyMessage]="
+      selectedFilter === TodoFilter.Completed ? null : 'No todos yet. Add one to get started!'
+    "
     (deleteTodo)="onDeleteTodo($event)"
     (toggleTodo)="onToggleTodo($event)"
     (updateTodo)="onUpdateTodo($event)"

@@ -37,9 +37,6 @@ test.describe('Todo Tabs', () => {
 
     // Verify todo does NOT show up in Completed tab
     await expect(page.getByText('Buy groceries')).not.toBeVisible();
-    await expect(
-      page.getByText('No todos yet. Add one to get started!'),
-    ).toBeVisible();
   });
 
   test('marking a todo as complete makes it show up under Completed but not Active', async ({
@@ -69,5 +66,51 @@ test.describe('Todo Tabs', () => {
     const completedTodo = page.getByText('Clean the house');
     await expect(completedTodo).toBeVisible();
     await expect(completedTodo).toHaveClass(/line-through/);
+  });
+
+  test('todo input is hidden on Completed tab', async ({ page }) => {
+    const input = page.getByPlaceholder('Enter a new todo...');
+    const addButton = page.getByRole('button', { name: 'Add' });
+
+    // Verify input is visible on All tab (default)
+    await expect(input).toBeVisible();
+    await expect(addButton).toBeVisible();
+
+    // Switch to Active tab
+    await page.getByRole('tab', { name: 'Active' }).click();
+
+    // Verify input is still visible on Active tab
+    await expect(input).toBeVisible();
+    await expect(addButton).toBeVisible();
+
+    // Switch to Completed tab
+    await page.getByRole('tab', { name: 'Completed' }).click();
+
+    // Verify input is hidden on Completed tab
+    await expect(input).not.toBeVisible();
+    await expect(addButton).not.toBeVisible();
+  });
+
+  test('empty message is hidden on Completed tab when no todos', async ({
+    page,
+  }) => {
+    const emptyMessage = page.getByText(
+      'No todos yet. Add one to get started!',
+    );
+
+    // Verify empty message is visible on All tab (default)
+    await expect(emptyMessage).toBeVisible();
+
+    // Switch to Active tab
+    await page.getByRole('tab', { name: 'Active' }).click();
+
+    // Verify empty message is visible on Active tab
+    await expect(emptyMessage).toBeVisible();
+
+    // Switch to Completed tab
+    await page.getByRole('tab', { name: 'Completed' }).click();
+
+    // Verify empty message is NOT visible on Completed tab
+    await expect(emptyMessage).not.toBeVisible();
   });
 });

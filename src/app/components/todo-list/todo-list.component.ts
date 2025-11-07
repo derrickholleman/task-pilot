@@ -31,6 +31,7 @@ import { IconButtonComponent } from '../shared/icon-button/icon-button.component
 })
 export class TodoListComponent implements AfterViewChecked {
   @Input() todos: Todo[] = []
+  @Input() emptyMessage: string | null = 'No todos yet. Add one to get started!'
   @Output() deleteTodo = new EventEmitter<string>()
   @Output() toggleTodo = new EventEmitter<string>()
   @Output() updateTodo = new EventEmitter<{ id: string; text: string }>()
