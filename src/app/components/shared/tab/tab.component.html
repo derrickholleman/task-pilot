@@ -1,4 +1,6 @@
 <button
+  role="tab"
+  [attr.aria-selected]="isActive"
   [class]="
     isActive
       ? 'w-full px-4 py-2 rounded-md bg-blue-500 text-white font-medium transition-all'
