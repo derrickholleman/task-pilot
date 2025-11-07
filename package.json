@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "e2e": "npx playwright test || npx playwright show-report",
+    "e2e:ci": "npx playwright test --reporter=list",
     "lint": "ng lint",
     "format": "prettier --write \"**/*.{ts,js,html,css,scss,md,json}\"",
     "prepare": "husky"
@@ -47,7 +48,7 @@
     "*.{ts,html}": [
       "eslint --fix",
       "prettier --write",
-      "bash -c 'npx playwright test --reporter=list'"
+      "npm run e2e:ci"
     ]
   }
 }
