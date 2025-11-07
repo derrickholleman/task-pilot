@@ -73,4 +73,8 @@ export class AppComponent implements OnInit {
   onUpdateTodo(event: { id: string; text: string }): void {
     this.todos = this.todoStorage.updateTodo(event.id, event.text)
   }
+
+  onDeleteAllCompleted(): void {
+    this.todos = this.todoStorage.deleteAllCompleted()
+  }
 }

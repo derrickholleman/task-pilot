@@ -50,4 +50,11 @@ export class TodoStorageService {
     this.saveTodos(updatedTodos)
     return updatedTodos
   }
+
+  deleteAllCompleted(): Todo[] {
+    const todos = this.getTodos()
+    const updatedTodos = todos.filter((todo) => !todo.isCompleted)
+    this.saveTodos(updatedTodos)
+    return updatedTodos
+  }
 }

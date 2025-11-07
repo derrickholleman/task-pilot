@@ -22,6 +22,18 @@
         Completed
       </app-tab>
     </div>
+    <!-- Clear Completed Button -->
+    <div
+      *ngIf="selectedFilter === TodoFilter.Completed && filteredTodos.length > 0"
+      class="flex justify-center mt-3"
+    >
+      <button
+        (click)="onDeleteAllCompleted()"
+        class="cursor-pointer px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
+      >
+        Clear Completed
+      </button>
+    </div>
   </div>
 
   <app-todo-input
