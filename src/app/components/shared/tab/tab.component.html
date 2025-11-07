@@ -1,0 +1,9 @@
+<button
+  [class]="
+    isActive
+      ? 'w-full px-4 py-2 rounded-md bg-blue-500 text-white font-medium transition-all'
+      : 'cursor-pointer w-full px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 font-medium transition-all'
+  "
+>
+  <ng-content></ng-content>
+</button>

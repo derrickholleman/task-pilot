@@ -14,7 +14,7 @@ import { Todo } from '../../services/todo-storage.service'
 import { CheckmarkIconComponent } from '../icons/checkmark-icon.component'
 import { XIconComponent } from '../icons/x-icon.component'
 import { PencilIconComponent } from '../icons/pencil-icon.component'
-import { IconButtonComponent } from '../shared/icon-button.component'
+import { IconButtonComponent } from '../shared/icon-button/icon-button.component'
 
 @Component({
   selector: 'app-todo-list',

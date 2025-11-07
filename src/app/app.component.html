@@ -3,10 +3,31 @@
     {{ title }}
   </h1>
 
+  <!-- Tab Navigation -->
+  <div class="max-w-2xl mx-auto mb-6">
+    <div class="flex gap-2 bg-white p-1 rounded-lg shadow-sm border border-gray-200">
+      <app-tab (click)="setFilter(TodoFilter.All)" [isActive]="selectedFilter === TodoFilter.All">
+        All
+      </app-tab>
+      <app-tab
+        (click)="setFilter(TodoFilter.Active)"
+        [isActive]="selectedFilter === TodoFilter.Active"
+      >
+        Active
+      </app-tab>
+      <app-tab
+        (click)="setFilter(TodoFilter.Completed)"
+        [isActive]="selectedFilter === TodoFilter.Completed"
+      >
+        Completed
+      </app-tab>
+    </div>
+  </div>
+
   <app-todo-input (addTodo)="onAddTodo($event)"></app-todo-input>
 
   <app-todo-list
-    [todos]="todos"
+    [todos]="filteredTodos"
     (deleteTodo)="onDeleteTodo($event)"
     (toggleTodo)="onToggleTodo($event)"
     (updateTodo)="onUpdateTodo($event)"
