@@ -97,6 +97,27 @@ src/
 e2e/                         # Playwright e2e tests
 ```
 
+## Path Aliases
+
+This project uses TypeScript path aliases for cleaner imports:
+
+```typescript
+// Instead of relative paths:
+import { Todo } from "../../services/todo-storage.service";
+
+// Use absolute imports:
+import { Todo } from "@services/todo-storage.service";
+```
+
+**Available aliases:**
+
+- `@app/*` → `src/app/*`
+- `@components/*` → `src/app/components/*`
+- `@services/*` → `src/app/services/*`
+- `@utils/*` → `src/app/utils/*`
+
+Configured in `tsconfig.json`.
+
 ## Pre-commit Hooks
 
 This project uses Husky and lint-staged to run checks before commits:
