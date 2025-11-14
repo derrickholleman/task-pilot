@@ -57,4 +57,13 @@ export class TodoStorageService {
     this.saveTodos(updatedTodos)
     return updatedTodos
   }
+
+  reorderTodos(fromIndex: number, toIndex: number): Todo[] {
+    const todos = this.getTodos()
+    const updatedTodos = [...todos]
+    const movedItem = updatedTodos.splice(fromIndex, 1)[0]
+    updatedTodos.splice(toIndex, 0, movedItem)
+    this.saveTodos(updatedTodos)
+    return updatedTodos
+  }
 }

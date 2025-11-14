@@ -81,4 +81,8 @@ export class AppComponent implements OnInit {
   onDeleteAllCompleted(): void {
     this.todos = this.todoStorage.deleteAllCompleted()
   }
+
+  onReorderTodo(event: { fromIndex: number; toIndex: number }): void {
+    this.todos = this.todoStorage.reorderTodos(event.fromIndex, event.toIndex)
+  }
 }
