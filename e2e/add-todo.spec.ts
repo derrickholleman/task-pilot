@@ -32,4 +32,29 @@ test.describe('Add Todo', () => {
     // Verify the todo persists after refresh
     await expect(page.getByText(todoText)).toBeVisible();
   });
+
+  test('todo displays creation timestamp', async ({ page }) => {
+    const todoText = 'Buy groceries';
+    const input = page.getByPlaceholder('Enter a new todo...');
+    await input.fill(todoText);
+    await page.getByRole('button', { name: 'Add' }).click();
+
+    // Get the current date/time for comparison
+    const now = new Date();
+    const month = now.toLocaleString('en-US', { month: 'short' });
+    const day = now.getDate();
+    const year = now.getFullYear();
+
+    // Verify timestamp contains current month, day, and year
+    const todoItem = page
+      .getByTestId('todo-item')
+      .filter({ hasText: todoText });
+    await expect(todoItem).toContainText(month);
+    await expect(todoItem).toContainText(day.toString());
+    await expect(todoItem).toContainText(year.toString());
+
+    // Verify timestamp is visible and formatted correctly (contains AM or PM)
+    const timestampPattern = /(AM|PM)/;
+    await expect(todoItem.getByText(timestampPattern)).toBeVisible();
+  });
 });

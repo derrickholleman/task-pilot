@@ -16,6 +16,7 @@ import { XIconComponent } from '../icons/x-icon.component'
 import { PencilIconComponent } from '../icons/pencil-icon.component'
 import { IconButtonComponent } from '../shared/icon-button/icon-button.component'
 import { DragDropHelper } from './drag-drop.helper'
+import { handleFormatDate } from '../../utils/date.util'
 
 @Component({
   selector: 'app-todo-list',
@@ -111,5 +112,9 @@ export class TodoListComponent implements AfterViewChecked {
 
   isDragOver(index: number): boolean {
     return this.dragDropHelper.isDragOver(index)
+  }
+
+  formatDate(timestamp: number): string {
+    return handleFormatDate(timestamp)
   }
 }

@@ -25,13 +25,15 @@
       />
 
       <!-- View mode -->
-      <p
-        *ngIf="!isEditing(todo.id)"
-        class="text-gray-800 flex-1 transition-all"
-        [ngClass]="{ 'line-through text-gray-400': todo.isCompleted }"
-      >
-        {{ todo.text }}
-      </p>
+      <div *ngIf="!isEditing(todo.id)" class="flex-1">
+        <p
+          class="text-gray-800 transition-all"
+          [ngClass]="{ 'line-through text-gray-400': todo.isCompleted }"
+        >
+          {{ todo.text }}
+        </p>
+        <p class="text-xs text-gray-500 mt-1">{{ formatDate(todo.createdAt) }}</p>
+      </div>
 
       <!-- Edit mode -->
       <input

@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
       id: crypto.randomUUID(),
       text,
       isCompleted: false,
+      createdAt: Date.now(),
     }
     this.todos.push(newTodo)
     this.todoStorage.saveTodos(this.todos)
