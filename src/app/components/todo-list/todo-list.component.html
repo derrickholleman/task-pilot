@@ -1,17 +1,19 @@
 <div class="max-w-2xl mx-auto mt-6 space-y-3">
   <div
     *ngFor="let todo of todos; let i = index"
-    draggable="true"
+    [draggable]="todos.length > 1"
     (dragstart)="onDragStart($event, i)"
     (dragover)="onDragOver($event, i)"
     (dragleave)="onDragLeave()"
     (drop)="onDrop($event, i)"
     (dragend)="onDragEnd()"
     data-testid="todo-item"
-    class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all flex items-center justify-between gap-4 cursor-move"
+    class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all flex items-center justify-between gap-4"
     [ngClass]="{
       'opacity-50 scale-95': isDragging(i),
       'border-blue-500 border-2 scale-105': isDragOver(i),
+      'cursor-move': todos.length > 1,
+      'cursor-default': todos.length <= 1,
     }"
   >
     <div class="flex items-center gap-3 flex-1">

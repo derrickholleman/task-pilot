@@ -5,6 +5,41 @@ test.describe('Drag and Drop Todos', () => {
     await page.goto('/');
   });
 
+  test('single todo is not draggable', async ({ page }) => {
+    const input = page.getByPlaceholder('Enter a new todo...');
+
+    // Add a single todo
+    await input.fill('Only todo');
+    await page.getByRole('button', { name: 'Add' }).click();
+
+    // Get the todo item
+    const todoItem = page.getByTestId('todo-item');
+
+    // Verify draggable attribute is false
+    await expect(todoItem).toHaveAttribute('draggable', 'false');
+
+    // Verify cursor style using computed styles
+    const cursorStyle = await todoItem.evaluate((el) => {
+      return window.getComputedStyle(el).cursor;
+    });
+    expect(cursorStyle).not.toBe('move');
+
+    // Add a second todo and verify it becomes draggable
+    await input.fill('Second todo');
+    await page.getByRole('button', { name: 'Add' }).click();
+
+    // Verify both todos are now draggable
+    const todoItems = page.getByTestId('todo-item');
+    await expect(todoItems.first()).toHaveAttribute('draggable', 'true');
+    await expect(todoItems.last()).toHaveAttribute('draggable', 'true');
+
+    // Verify cursor is now the move style
+    const cursorStyleAfter = await todoItems.first().evaluate((el) => {
+      return window.getComputedStyle(el).cursor;
+    });
+    expect(cursorStyleAfter).toBe('move');
+  });
+
   test('can reorder todos by dragging and dropping', async ({ page }) => {
     const input = page.getByPlaceholder('Enter a new todo...');
 
