@@ -58,5 +58,7 @@
     </div>
   </div>
 
-  <div *ngIf="todos.length === 0 && emptyMessage" class="text-center text-gray-400 py-8">hi</div>
+  <div *ngIf="todos.length === 0 && emptyMessage" class="text-center text-gray-400 py-8">
+    {{ emptyMessage }}
+  </div>
 </div>
