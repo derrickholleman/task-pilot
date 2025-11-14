@@ -18,7 +18,6 @@ A modern todo application built with Angular, featuring inline editing, completi
 - Drag and drop to reorder todos with visual feedback
 - Tab-based filtering (All, Active, Completed)
 - Bulk delete completed todos
-- Tab selection persistence across sessions
 - Local storage persistence
 - Responsive design
 
