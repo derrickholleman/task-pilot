@@ -41,6 +41,16 @@
     (addTodo)="onAddTodo($event)"
   ></app-todo-input>
 
+  <!-- Items Left Counter -->
+  <div
+    *ngIf="activeTodosCount > 0 && selectedFilter !== TodoFilter.Completed"
+    class="max-w-2xl mx-auto mt-4 mb-2"
+  >
+    <p class="text-sm text-gray-600 text-center">
+      {{ activeTodosCount }} {{ activeTodosCount === 1 ? 'item' : 'items' }} left
+    </p>
+  </div>
+
   <app-todo-list
     [todos]="filteredTodos"
     [emptyMessage]="

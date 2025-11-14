@@ -47,6 +47,10 @@ export class AppComponent implements OnInit {
     }
   }
 
+  get activeTodosCount(): number {
+    return this.todos.filter((todo) => !todo.isCompleted).length
+  }
+
   setFilter(filter: TodoFilter): void {
     this.selectedFilter = filter
     localStorage.setItem(this.FILTER_STORAGE_KEY, filter)
