@@ -15,6 +15,7 @@ A modern todo application built with Angular, featuring inline editing, completi
 - Add, edit, and delete todos
 - Mark todos as complete/incomplete with strikethrough styling
 - Inline editing with auto-focus
+- Drag and drop to reorder todos with visual feedback
 - Tab-based filtering (All, Active, Completed)
 - Bulk delete completed todos
 - Tab selection persistence across sessions
@@ -92,7 +93,8 @@ src/
 │   │   └── todo-storage.service.ts
 │   ├── app.component.ts
 │   └── app.config.ts
-└── styles.css
+├── styles.css
+└── e2e/                     # Playwright e2e tests
 ```
 
 ## Pre-commit Hooks
