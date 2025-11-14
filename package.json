@@ -47,7 +47,9 @@
   "lint-staged": {
     "*.{ts,html}": [
       "eslint --fix",
-      "prettier --write",
+      "prettier --write"
+    ],
+    "e2e/**/*.spec.ts": [
       "npm run e2e:ci"
     ]
   }
