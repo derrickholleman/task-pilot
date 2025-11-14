@@ -92,8 +92,9 @@ src/
 │   │   └── todo-storage.service.ts
 │   ├── app.component.ts
 │   └── app.config.ts
-├── styles.css
-└── e2e/                     # Playwright e2e tests
+└── styles.css
+
+e2e/                         # Playwright e2e tests
 ```
 
 ## Pre-commit Hooks

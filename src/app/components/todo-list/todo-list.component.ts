@@ -10,13 +10,13 @@ import {
 } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
-import { Todo } from '../../services/todo-storage.service'
-import { CheckmarkIconComponent } from '../icons/checkmark-icon.component'
-import { XIconComponent } from '../icons/x-icon.component'
-import { PencilIconComponent } from '../icons/pencil-icon.component'
-import { IconButtonComponent } from '../shared/icon-button/icon-button.component'
+import { Todo } from '@services/todo-storage.service'
+import { CheckmarkIconComponent } from '@components/icons/checkmark-icon.component'
+import { XIconComponent } from '@components/icons/x-icon.component'
+import { PencilIconComponent } from '@components/icons/pencil-icon.component'
+import { IconButtonComponent } from '@components/shared/icon-button/icon-button.component'
 import { DragDropHelper } from './drag-drop.helper'
-import { handleFormatDate } from '../../utils/date.util'
+import { handleFormatDate } from '@utils/date.util'
 
 @Component({
   selector: 'app-todo-list',
