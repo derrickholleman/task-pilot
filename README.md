@@ -1,6 +1,6 @@
 # TaskPilot
 
-A modern todo application built with Angular, featuring inline editing, completion tracking, and local storage persistence.
+A modern, fully-featured todo application built with Angular 19, Tailwind CSS, and end-to-end tested with Playwright.
 
 ## Technologies
 
