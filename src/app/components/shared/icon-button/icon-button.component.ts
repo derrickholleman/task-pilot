@@ -1,22 +1,22 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core'
-import { CommonModule } from '@angular/common'
+import { Component, input, output, computed, ChangeDetectionStrategy } from '@angular/core'
 
 type ColorVariant = 'blue' | 'red' | 'green' | 'gray'
 
 @Component({
   selector: 'app-icon-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
-    <button (click)="clicked.emit()" [class]="getButtonClasses()" [attr.aria-label]="ariaLabel">
+    <button (click)="clicked.emit()" [class]="buttonClasses()" [attr.aria-label]="ariaLabel()">
       <ng-content></ng-content>
     </button>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconButtonComponent {
-  @Input() variant: ColorVariant = 'gray'
-  @Input() ariaLabel = ''
-  @Output() clicked = new EventEmitter<void>()
+  variant = input<ColorVariant>('gray')
+  ariaLabel = input('')
+  clicked = output<void>()
 
   private readonly baseClasses = 'p-2 rounded-lg cursor-pointer transition-colors'
 
@@ -27,7 +27,7 @@ export class IconButtonComponent {
     gray: 'text-gray-500 hover:text-gray-700 hover:bg-gray-50',
   }
 
-  getButtonClasses(): string {
-    return `${this.baseClasses} ${this.variantClasses[this.variant]}`
-  }
+  buttonClasses = computed(() => {
+    return `${this.baseClasses} ${this.variantClasses[this.variant()]}`
+  })
 }

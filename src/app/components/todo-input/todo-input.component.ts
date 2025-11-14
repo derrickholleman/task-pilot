@@ -1,20 +1,26 @@
-import { Component, EventEmitter, Output } from '@angular/core'
-import { FormsModule } from '@angular/forms'
+import { Component, output, signal, ChangeDetectionStrategy } from '@angular/core'
 
 @Component({
   selector: 'app-todo-input',
   standalone: true,
-  imports: [FormsModule],
+  imports: [],
   templateUrl: './todo-input.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoInputComponent {
-  @Output() addTodo = new EventEmitter<string>()
-  todoText = ''
+  addTodo = output<string>()
+  todoText = signal('')
 
-  onAddTodo(): void {
-    if (this.todoText.trim()) {
-      this.addTodo.emit(this.todoText.trim())
-      this.todoText = ''
+  onInputChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value
+    this.todoText.set(value)
+  }
+
+  onSubmitTodo(): void {
+    const text = this.todoText()
+    if (text.trim()) {
+      this.addTodo.emit(text.trim())
+      this.todoText.set('')
     }
   }
 }

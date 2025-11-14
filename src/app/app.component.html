@@ -6,55 +6,52 @@
   <!-- Tab Navigation -->
   <div class="max-w-2xl mx-auto mb-6">
     <div class="flex gap-2 bg-white p-1 rounded-lg shadow-sm border border-gray-200">
-      <app-tab (click)="setFilter(TodoFilter.All)" [isActive]="selectedFilter === TodoFilter.All">
+      <app-tab (click)="setFilter(TodoFilter.All)" [isActive]="selectedFilter() === TodoFilter.All">
         All
       </app-tab>
       <app-tab
         (click)="setFilter(TodoFilter.Active)"
-        [isActive]="selectedFilter === TodoFilter.Active"
+        [isActive]="selectedFilter() === TodoFilter.Active"
       >
         Active
       </app-tab>
       <app-tab
         (click)="setFilter(TodoFilter.Completed)"
-        [isActive]="selectedFilter === TodoFilter.Completed"
+        [isActive]="selectedFilter() === TodoFilter.Completed"
       >
         Completed
       </app-tab>
     </div>
     <!-- Clear Completed Button -->
-    <div
-      *ngIf="selectedFilter === TodoFilter.Completed && filteredTodos.length > 0"
-      class="flex justify-center mt-3"
-    >
-      <button
-        (click)="onDeleteAllCompleted()"
-        class="cursor-pointer px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
-      >
-        Clear Completed
-      </button>
-    </div>
+    @if (selectedFilter() === TodoFilter.Completed && filteredTodos().length > 0) {
+      <div class="flex justify-center mt-3">
+        <button
+          (click)="onDeleteAllCompleted()"
+          class="cursor-pointer px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
+        >
+          Clear Completed
+        </button>
+      </div>
+    }
   </div>
 
-  <app-todo-input
-    *ngIf="selectedFilter !== TodoFilter.Completed"
-    (addTodo)="onAddTodo($event)"
-  ></app-todo-input>
+  @if (selectedFilter() !== TodoFilter.Completed) {
+    <app-todo-input (addTodo)="createTodo($event)"></app-todo-input>
+  }
 
   <!-- Items Left Counter -->
-  <div
-    *ngIf="activeTodosCount > 0 && selectedFilter !== TodoFilter.Completed"
-    class="max-w-2xl mx-auto mt-4 mb-2"
-  >
-    <p class="text-sm text-gray-600 text-center">
-      {{ activeTodosCount }} {{ activeTodosCount === 1 ? 'item' : 'items' }} left
-    </p>
-  </div>
+  @if (activeTodosCount() > 0 && selectedFilter() !== TodoFilter.Completed) {
+    <div class="max-w-2xl mx-auto mt-4 mb-2">
+      <p class="text-sm text-gray-600 text-center">
+        {{ activeTodosCount() }} {{ activeTodosCount() === 1 ? 'item' : 'items' }} left
+      </p>
+    </div>
+  }
 
   <app-todo-list
-    [todos]="filteredTodos"
+    [todos]="filteredTodos()"
     [emptyMessage]="
-      selectedFilter === TodoFilter.Completed ? null : 'No todos yet. Add one to get started!'
+      selectedFilter() === TodoFilter.Completed ? null : 'No todos yet. Add one to get started!'
     "
     (deleteTodo)="onDeleteTodo($event)"
     (toggleTodo)="onToggleTodo($event)"

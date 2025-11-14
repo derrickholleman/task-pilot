@@ -1,15 +1,13 @@
 import {
   Component,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChildren,
-  QueryList,
+  input,
+  output,
+  viewChild,
   ElementRef,
-  AfterViewChecked,
+  signal,
+  effect,
+  ChangeDetectionStrategy,
 } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { FormsModule } from '@angular/forms'
 import { Todo } from '@services/todo-storage.service'
 import { CheckmarkIconComponent } from '@components/icons/checkmark-icon.component'
 import { XIconComponent } from '@components/icons/x-icon.component'
@@ -21,35 +19,31 @@ import { handleFormatDate } from '@utils/date.util'
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    CheckmarkIconComponent,
-    XIconComponent,
-    PencilIconComponent,
-    IconButtonComponent,
-  ],
+  imports: [CheckmarkIconComponent, XIconComponent, PencilIconComponent, IconButtonComponent],
   templateUrl: './todo-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoListComponent implements AfterViewChecked {
-  @Input() todos: Todo[] = []
-  @Input() emptyMessage: string | null = 'No todos yet. Add one to get started!'
-  @Output() deleteTodo = new EventEmitter<string>()
-  @Output() toggleTodo = new EventEmitter<string>()
-  @Output() updateTodo = new EventEmitter<{ id: string; text: string }>()
-  @Output() reorderTodo = new EventEmitter<{ fromIndex: number; toIndex: number }>()
-  @ViewChildren('editInput') editInputs!: QueryList<ElementRef<HTMLInputElement>>
+export class TodoListComponent {
+  todos = input<Todo[]>([])
+  emptyMessage = input<string | null>('No todos yet. Add one to get started!')
+  deleteTodo = output<string>()
+  toggleTodo = output<string>()
+  updateTodo = output<{ id: string; text: string }>()
+  reorderTodo = output<{ fromIndex: number; toIndex: number }>()
+  editInput = viewChild<ElementRef<HTMLInputElement>>('editInput')
 
-  editingTodoId: string | null = null
-  editingText = ''
-  private shouldFocus = false
+  editingTodoId = signal<string | null>(null)
+  editingText = signal('')
+  private shouldFocus = signal(false)
   dragDropHelper = new DragDropHelper()
 
-  ngAfterViewChecked(): void {
-    if (this.shouldFocus && this.editInputs.length > 0) {
-      this.editInputs.first.nativeElement.focus()
-      this.shouldFocus = false
-    }
+  constructor() {
+    effect(() => {
+      if (this.shouldFocus() && this.editInput()) {
+        this.editInput()!.nativeElement.focus()
+        this.shouldFocus.set(false)
+      }
+    })
   }
 
   onDeleteTodo(id: string): void {
@@ -61,26 +55,33 @@ export class TodoListComponent implements AfterViewChecked {
   }
 
   onEditTodo(todo: Todo): void {
-    this.editingTodoId = todo.id
-    this.editingText = todo.text
-    this.shouldFocus = true
+    this.editingTodoId.set(todo.id)
+    this.editingText.set(todo.text)
+    this.shouldFocus.set(true)
+  }
+
+  onEditInputChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value
+    this.editingText.set(value)
   }
 
   onSaveTodo(): void {
-    if (this.editingTodoId && this.editingText.trim()) {
-      this.updateTodo.emit({ id: this.editingTodoId, text: this.editingText.trim() })
-      this.editingTodoId = null
-      this.editingText = ''
+    const todoId = this.editingTodoId()
+    const text = this.editingText()
+    if (todoId && text.trim()) {
+      this.updateTodo.emit({ id: todoId, text: text.trim() })
+      this.editingTodoId.set(null)
+      this.editingText.set('')
     }
   }
 
   onCancelEdit(): void {
-    this.editingTodoId = null
-    this.editingText = ''
+    this.editingTodoId.set(null)
+    this.editingText.set('')
   }
 
   isEditing(id: string): boolean {
-    return this.editingTodoId === id
+    return this.editingTodoId() === id
   }
 
   onDragStart(event: DragEvent, index: number): void {

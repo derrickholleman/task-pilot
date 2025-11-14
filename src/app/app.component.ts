@@ -1,5 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core'
-import { CommonModule } from '@angular/common'
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core'
 import { TodoInputComponent } from '@components/todo-input/todo-input.component'
 import { TodoListComponent } from '@components/todo-list/todo-list.component'
 import { TabComponent } from '@components/shared/tab/tab.component'
@@ -13,77 +12,87 @@ export enum TodoFilter {
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, TodoInputComponent, TodoListComponent, TabComponent],
+  imports: [TodoInputComponent, TodoListComponent, TabComponent],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
-  title = 'TaskPilot'
-  todos: Todo[] = []
-  selectedFilter: TodoFilter = TodoFilter.All
+export class AppComponent {
+  readonly title = 'TaskPilot'
   TodoFilter = TodoFilter // Expose enum to template
   private todoStorage = inject(TodoStorageService)
   private readonly FILTER_STORAGE_KEY = 'taskpilot-selected-filter'
 
-  ngOnInit(): void {
-    this.todos = this.todoStorage.getTodos()
-    this.loadSelectedFilter()
+  todos = signal<Todo[]>([])
+  selectedFilter = signal<TodoFilter>(this.loadSelectedFilter())
+
+  filteredTodos = computed(() => {
+    const filter = this.selectedFilter()
+    const allTodos = this.todos()
+    switch (filter) {
+      case TodoFilter.Active:
+        return allTodos.filter((todo) => !todo.isCompleted)
+      case TodoFilter.Completed:
+        return allTodos.filter((todo) => todo.isCompleted)
+      default:
+        return allTodos
+    }
+  })
+
+  activeTodosCount = computed(() => {
+    return this.todos().filter((todo) => !todo.isCompleted).length
+  })
+
+  constructor() {
+    this.todos.set(this.todoStorage.getTodos())
   }
 
-  private loadSelectedFilter(): void {
+  private loadSelectedFilter(): TodoFilter {
     const savedFilter = localStorage.getItem(this.FILTER_STORAGE_KEY)
     if (savedFilter && Object.values(TodoFilter).includes(savedFilter as TodoFilter)) {
-      this.selectedFilter = savedFilter as TodoFilter
+      return savedFilter as TodoFilter
     }
-  }
-
-  get filteredTodos(): Todo[] {
-    switch (this.selectedFilter) {
-      case TodoFilter.Active:
-        return this.todos.filter((todo) => !todo.isCompleted)
-      case TodoFilter.Completed:
-        return this.todos.filter((todo) => todo.isCompleted)
-      default:
-        return this.todos
-    }
-  }
-
-  get activeTodosCount(): number {
-    return this.todos.filter((todo) => !todo.isCompleted).length
+    return TodoFilter.All
   }
 
   setFilter(filter: TodoFilter): void {
-    this.selectedFilter = filter
+    this.selectedFilter.set(filter)
     localStorage.setItem(this.FILTER_STORAGE_KEY, filter)
   }
 
-  onAddTodo(text: string): void {
+  createTodo(text: string): void {
     const newTodo: Todo = {
       id: crypto.randomUUID(),
       text,
       isCompleted: false,
       createdAt: Date.now(),
     }
-    this.todos.push(newTodo)
-    this.todoStorage.saveTodos(this.todos)
+    const updatedTodos = [...this.todos(), newTodo]
+    this.todos.set(updatedTodos)
+    this.todoStorage.saveTodos(updatedTodos)
   }
 
   onDeleteTodo(id: string): void {
-    this.todos = this.todoStorage.deleteTodo(id)
+    const updatedTodos = this.todoStorage.deleteTodo(id)
+    this.todos.set(updatedTodos)
   }
 
   onToggleTodo(id: string): void {
-    this.todos = this.todoStorage.toggleCompletion(id)
+    const updatedTodos = this.todoStorage.toggleCompletion(id)
+    this.todos.set(updatedTodos)
   }
 
   onUpdateTodo(event: { id: string; text: string }): void {
-    this.todos = this.todoStorage.updateTodo(event.id, event.text)
+    const updatedTodos = this.todoStorage.updateTodo(event.id, event.text)
+    this.todos.set(updatedTodos)
   }
 
   onDeleteAllCompleted(): void {
-    this.todos = this.todoStorage.deleteAllCompleted()
+    const updatedTodos = this.todoStorage.deleteAllCompleted()
+    this.todos.set(updatedTodos)
   }
 
   onReorderTodo(event: { fromIndex: number; toIndex: number }): void {
-    this.todos = this.todoStorage.reorderTodos(event.fromIndex, event.toIndex)
+    const updatedTodos = this.todoStorage.reorderTodos(event.fromIndex, event.toIndex)
+    this.todos.set(updatedTodos)
   }
 }

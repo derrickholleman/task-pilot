@@ -1,81 +1,88 @@
 <div class="max-w-2xl mx-auto mt-6 space-y-3">
-  <div
-    *ngFor="let todo of todos; let i = index"
-    [draggable]="todos.length > 1"
-    (dragstart)="onDragStart($event, i)"
-    (dragover)="onDragOver($event, i)"
-    (dragleave)="onDragLeave()"
-    (drop)="onDrop($event, i)"
-    (dragend)="onDragEnd()"
-    data-testid="todo-item"
-    class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all flex items-center justify-between gap-4"
-    [class.opacity-50]="isDragging(i)"
-    [class.scale-95]="isDragging(i)"
-    [class.border-blue-500]="isDragOver(i)"
-    [class.border-2]="isDragOver(i)"
-    [class.scale-105]="isDragOver(i)"
-    [class.cursor-move]="todos.length > 1"
-    [class.cursor-default]="todos.length <= 1"
-  >
-    <div class="flex items-center gap-3 flex-1">
-      <input
-        type="checkbox"
-        [checked]="todo.isCompleted"
-        (change)="onToggleTodo(todo.id)"
-        [disabled]="isEditing(todo.id)"
-        class="w-5 h-5 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-        aria-label="Mark todo as complete"
-      />
+  @for (todo of todos(); track todo.id; let i = $index) {
+    <div
+      [draggable]="todos().length > 1"
+      (dragstart)="onDragStart($event, i)"
+      (dragover)="onDragOver($event, i)"
+      (dragleave)="onDragLeave()"
+      (drop)="onDrop($event, i)"
+      (dragend)="onDragEnd()"
+      data-testid="todo-item"
+      class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all flex items-center justify-between gap-4"
+      [class.opacity-50]="isDragging(i)"
+      [class.scale-95]="isDragging(i)"
+      [class.border-blue-500]="isDragOver(i)"
+      [class.border-2]="isDragOver(i)"
+      [class.scale-105]="isDragOver(i)"
+      [class.cursor-move]="todos().length > 1"
+      [class.cursor-default]="todos().length <= 1"
+    >
+      <div class="flex items-center gap-3 flex-1">
+        <input
+          type="checkbox"
+          [checked]="todo.isCompleted"
+          (change)="onToggleTodo(todo.id)"
+          [disabled]="isEditing(todo.id)"
+          class="w-5 h-5 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Mark todo as complete"
+        />
 
-      <!-- View mode -->
-      <div *ngIf="!isEditing(todo.id)" class="flex-1">
-        <p
-          class="text-gray-800 transition-all"
-          [class.line-through]="todo.isCompleted"
-          [class.text-gray-400]="todo.isCompleted"
-        >
-          {{ todo.text }}
-        </p>
-        <p class="text-xs text-gray-500 mt-1">{{ formatDate(todo.createdAt) }}</p>
+        <!-- View mode -->
+        @if (!isEditing(todo.id)) {
+          <div class="flex-1">
+            <p
+              class="text-gray-800 transition-all"
+              [class.line-through]="todo.isCompleted"
+              [class.text-gray-400]="todo.isCompleted"
+            >
+              {{ todo.text }}
+            </p>
+            <p class="text-xs text-gray-500 mt-1">{{ formatDate(todo.createdAt) }}</p>
+          </div>
+        }
+
+        <!-- Edit mode -->
+        @if (isEditing(todo.id)) {
+          <input
+            #editInput
+            type="text"
+            [value]="editingText()"
+            (input)="onEditInputChange($event)"
+            (keyup.enter)="onSaveTodo()"
+            (keyup.escape)="onCancelEdit()"
+            class="flex-1 px-3 py-2 border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label="Edit todo text"
+          />
+        }
       </div>
 
-      <!-- Edit mode -->
-      <input
-        *ngIf="isEditing(todo.id)"
-        #editInput
-        type="text"
-        [(ngModel)]="editingText"
-        (keyup.enter)="onSaveTodo()"
-        (keyup.escape)="onCancelEdit()"
-        class="flex-1 px-3 py-2 border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        aria-label="Edit todo text"
-      />
+      <div class="flex items-center gap-2">
+        <!-- Edit mode buttons -->
+        @if (isEditing(todo.id)) {
+          <app-icon-button (clicked)="onSaveTodo()" variant="green" ariaLabel="Save todo">
+            <app-checkmark-icon />
+          </app-icon-button>
+          <app-icon-button (clicked)="onCancelEdit()" variant="gray" ariaLabel="Cancel edit">
+            <app-x-icon />
+          </app-icon-button>
+        }
+
+        <!-- View mode buttons -->
+        @if (!isEditing(todo.id)) {
+          <app-icon-button (clicked)="onEditTodo(todo)" variant="blue" ariaLabel="Edit todo">
+            <app-pencil-icon />
+          </app-icon-button>
+          <app-icon-button (clicked)="onDeleteTodo(todo.id)" variant="red" ariaLabel="Delete todo">
+            <app-x-icon />
+          </app-icon-button>
+        }
+      </div>
     </div>
+  }
 
-    <div class="flex items-center gap-2">
-      <!-- Edit mode buttons -->
-      <ng-container *ngIf="isEditing(todo.id)">
-        <app-icon-button (clicked)="onSaveTodo()" variant="green" ariaLabel="Save todo">
-          <app-checkmark-icon />
-        </app-icon-button>
-        <app-icon-button (clicked)="onCancelEdit()" variant="gray" ariaLabel="Cancel edit">
-          <app-x-icon />
-        </app-icon-button>
-      </ng-container>
-
-      <!-- View mode buttons -->
-      <ng-container *ngIf="!isEditing(todo.id)">
-        <app-icon-button (clicked)="onEditTodo(todo)" variant="blue" ariaLabel="Edit todo">
-          <app-pencil-icon />
-        </app-icon-button>
-        <app-icon-button (clicked)="onDeleteTodo(todo.id)" variant="red" ariaLabel="Delete todo">
-          <app-x-icon />
-        </app-icon-button>
-      </ng-container>
+  @if (todos().length === 0 && emptyMessage()) {
+    <div class="text-center text-gray-400 py-8">
+      {{ emptyMessage() }}
     </div>
-  </div>
-
-  <div *ngIf="todos.length === 0 && emptyMessage" class="text-center text-gray-400 py-8">
-    {{ emptyMessage }}
-  </div>
+  }
 </div>
